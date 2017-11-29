@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+        <script src = "jscolor.js"></script>
         <style type="text/css">
             html, body{
                 width:100%;
@@ -12,6 +13,18 @@
                 margin:0;
                 padding:0;
                 text-align: center;
+                min-width:62rem;
+                overflow-y:hidden;
+            }
+            
+            @media all and (max-height : 46.25rem){
+                html, body{
+                    overflow-y:auto;
+                }
+            }
+            
+            .jscolor{
+                cursor:pointer;
             }
             
             *{
@@ -20,6 +33,24 @@
                 outline:none;
                 box-sizing:border-box;
                 font-family: 'nanumsquare';
+            }
+            
+            *::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                background-color: #F5F5F5;
+            }
+
+            *::-webkit-scrollbar {
+                width: 10px;
+                height:10px;
+                background-color: #F5F5F5;
+            }
+
+            *::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .3);
+                background-color: #555;
             }
 
             #logo{
@@ -43,7 +74,7 @@
             #shadowCover{
                 width:100%;
                 height:40rem;
-                border:1px solid;
+                /*border:1px solid;*/
                 margin-top:2rem;
             }
             
@@ -68,7 +99,8 @@
             
             #shadowCover .settings#boxValues{
                 float:left;
-                border-right:1px solid;
+                /*border-right:1px solid;*/
+                overflow-y: auto;
             }
             
             input[type=range] {
@@ -140,6 +172,60 @@
             #valueCover .browsers:nth-of-type(1){
                 padding-top:0.6rem;
             }
+            
+            /* toggle switch */
+            .switch{
+                position:relative;
+                display: inline-block;
+                width:6rem;
+                height:1.5rem;
+                margin-left:2rem;
+                top:-2px;
+            }
+            
+            .switch input{
+                display:none;
+            }
+            
+            .sliderRound {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 10px;
+            }
+
+            .sliderRound:before {
+                position: absolute;
+                content: "";
+                height: 16px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 5px;
+            }
+
+            input:checked + .sliderRound {
+                background-color: #2196F3;
+            }
+
+            input:focus + .sliderRound {
+                box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .sliderRound:before {
+                -webkit-transform: translateX(62.5px);
+                -ms-transform: translateX(62.5px);
+                transform: translateX(62.5px);
+            }
         </style>
     </head>
     <body>
@@ -155,41 +241,86 @@
                 <!-- horizontal length -->
                 <div class = "eachCovers">
                     <label for = "horizontal">
-                    Horizontal Length
+                        Horizontal Length
                     </label>
                     <input type = "number" id = "horizontal"> px 
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "10">
+                    <input type = "range" min="-200" max="200" step ="0.1" value = "10" id = "horizontalVal">
                 </div>
                 
                 <!-- vertical length -->
                 <div class = "eachCovers">
                     <label for = "vertical">
-                    Vertical Length
+                        Vertical Length
                     </label>
                     <input type = "number" id = "vertical"> px
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "10">
+                    <input type = "range" min="-200" max="200" step ="0.1" value = "10" id = "verticalVal">
                 </div>
                 
                 <!-- blur radius -->
                 <div class = "eachCovers">
                     <label for = "blur">
-                    Blur Radius
+                        Blur Radius
                     </label>
                     <input type = "number" id = "blur"> px
                     
-                    <input type = "range" min="0" max="200" step ="0.1" value = "10">
+                    <input type = "range" min="0" max="200" step ="0.1" value = "10" id = "blurVal">
                 </div>
                 
                 <!-- spread radius -->
                 <div class = "eachCovers">
                     <label for = "spread">
-                    Spread Radius
+                        Spread Radius
                     </label>
                     <input type = "number" id = "spread"> px
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "0">
+                    <input type = "range" min="-200" max="200" step ="0.1" value = "0" id = "spreadVal">
+                </div>
+                
+                <!-- Shadow Color -->
+                <div class = "eachCovers">
+                    <label for = "shadow"> <!-- 딱히 의미 없음 -->
+                        Shadow Color
+                    </label>
+                    <input class = "jscolor" value = "F4586D" id = "shadowVal">
+                </div>
+                
+                <!-- Background Color -->
+                <div class = "eachCovers">
+                    <label for = "background"> <!-- 딱히 의미 없음 -->
+                        Background Color
+                    </label>
+                    <input class = "jscolor" value = "B456D3" id = "backgroundVal">
+                </div>
+                
+                <!-- Box Color -->
+                <div class = "eachCovers">
+                    <label for = "box"> <!-- 딱히 의미 없음 -->
+                        Box Color
+                    </label>
+                    <input class = "jscolor" value = "74E484" id = "boxVal">
+                </div>
+                
+                <!-- Opacity -->
+                <div class = "eachCovers">
+                    <label for = "opacity">
+                        Opacity
+                    </label>
+                    <input type = "number" id = "opacity">
+                    
+                    <input type = "range" min="0" max="1" step ="0.1" value = "1" id = "opacityVal">
+                </div>
+                
+                <!-- Outline/Inset Toggle -->
+                <div class = "eachCovers">
+                    <label for = "toggle">
+                        Outline / Inset
+                    </label>
+                    <label class = "switch">
+                        <input type = "checkbox">
+                        <span class = "sliderRound"></span>
+                    </label>
                 </div>
             </div>
             <div class = "settings" id = "boxResult">
@@ -217,5 +348,9 @@
                 </div>
             </div>
         </div>
+        
+        <script type = "text/javascript">
+            
+        </script>
     </body>
 </html>
