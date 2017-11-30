@@ -25,7 +25,7 @@
                     </label>
                     <input type = "number" id = "horizontal" min="-200" max="200" value = "0"> px 
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "0" id = "horizontalVal">
+                    <input type = "range" min="-200" max="200" step ="1" value = "0" id = "horizontalVal">
                 </div>
                 
                 <!-- vertical length -->
@@ -35,7 +35,7 @@
                     </label>
                     <input type = "number" id = "vertical" min="-200" max="200" value = "0"> px
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "0" id = "verticalVal">
+                    <input type = "range" min="-200" max="200" step ="1" value = "0" id = "verticalVal">
                 </div>
                 
                 <!-- blur radius -->
@@ -45,7 +45,7 @@
                     </label>
                     <input type = "number" id = "blur" min="0" max="200" value = "0"> px
                     
-                    <input type = "range" min="0" max="200" step ="0.1" value = "0" id = "blurVal">
+                    <input type = "range" min="0" max="200" step ="1" value = "0" id = "blurVal">
                 </div>
                 
                 <!-- spread radius -->
@@ -55,7 +55,7 @@
                     </label>
                     <input type = "number" id = "spread" min="-200" max="200" value = "0"> px
                     
-                    <input type = "range" min="-200" max="200" step ="0.1" value = "0" id = "spreadVal">
+                    <input type = "range" min="-200" max="200" step ="1" value = "0" id = "spreadVal">
                 </div>
                 
                 <!-- Shadow Color -->
@@ -79,17 +79,27 @@
                     <label for = "box"> <!-- 딱히 의미 없음 -->
                         Box Color
                     </label>
-                    <input class = "jscolor" value = "74E484" id = "boxVal">
+                    <input class = "jscolor" value = "4F4C45" id = "boxVal">
                 </div>
                 
-                <!-- Opacity -->
+                <!-- Box-Width -->
                 <div class = "eachCovers">
-                    <label for = "opacity">
-                        Opacity
+                    <label for = "width">
+                        Box Width
                     </label>
-                    <input type = "number" id = "opacity" style = "margin-left:4rem;" min="0" max="1" step = "0.1" value = "1">
+                    <input type = "number" id = "width" min="50" max="550" step = "0.1" value = "440"> px
                     
-                    <input type = "range" min="0" max="1" step ="0.1" value = "1" id = "opacityVal">
+                    <input type = "range" min="200" max="650" step ="1" value = "440" id = "widthVal">
+                </div>
+
+                <!-- Box-Height -->
+                <div class = "eachCovers">
+                    <label for = "height">
+                        Box Height
+                    </label>
+                    <input type = "number" id = "width" min="50" max="550" step = "0.1" value = "440"> px
+                    
+                    <input type = "range" min="150" max="500" step ="1" value = "440" id = "heightVal">
                 </div>
                 
                 <!-- Outline/Inset Toggle -->
@@ -132,8 +142,8 @@
         <script type = "text/javascript">
             /*
                 구현 기능
-                1. input[type=range] input[type=num]에 연동
-                2. 연동된 값 박스에 적용
+                1. input[type=range] input[type=num]에 연동 - OK
+                2. 연동된 값 박스에 적용 - OK
                 3. 적용 후 결과 코드 InnerHTML로 보여주기
             */
 
@@ -141,10 +151,13 @@
             let inputRange = document.querySelectorAll('input[type=range]');
             let inputNum = document.querySelectorAll('input[type=number]');
             let backColor = document.getElementsByClassName('jscolor');
+
+            //box-shadow outline / inset 설정 변수
+            let shadowLine = document.querySelector('input[type=checkbox]');
+
             //box-shadow가 적용될 박스
             const resultBox = document.getElementById('defaultBox');
 
-            //설정
             Array.from(inputRange).forEach((elem, index) => {
                 //input 값들 설정 및 box-shadow 적용
                 /*
@@ -153,28 +166,49 @@
                     2. vertical length
                     3. blur radius
                     4. spread radius
+                    5. outline / inset
                 */
 
                 elem.oninput = (e) => {
                     inputNum[index].value = e.target.value;
-                    setShadow();
+                    settings();
                 }
                 inputNum[index].oninput = (e) => {
                     elem.value = e.target.value;
-                    setShadow();
+                    settings();
                 }
                 
             });
 
-            //box-shadow 설정 중복
-            function setShadow(){
-                resultBox.style.boxShadow = 
-                    `
-                        ${inputRange[0].value + "px"}
-                        ${inputRange[1].value + "px"}
-                        ${inputRange[2].value + "px"}
-                        ${inputRange[3].value + "px"}
-                    `;
+            //outline / inset 설정
+            shadowLine.onclick = () => {
+                console.log("check");
+                settings();
+            }
+
+            function settings(){
+                //box-shadow 설정
+                function setShadow(){
+                    shadowLine.value = shadowLine.checked ? 'inset' : '';
+
+                    resultBox.style.boxShadow = 
+                        `
+                            ${inputRange[0].value + "px"}
+                            ${inputRange[1].value + "px"}
+                            ${inputRange[2].value + "px"}
+                            ${inputRange[3].value + "px"}
+                            ${shadowLine.value}
+                        `;
+                }
+
+                //width, height 설정
+                function setSize(){
+                    resultBox.style.width = inputRange[4].value + "px";
+                    resultBox.style.height = inputRange[5].value + "px";
+                }
+
+                setShadow();
+                setSize();
             }
 
             //박스 배경화면 설정
