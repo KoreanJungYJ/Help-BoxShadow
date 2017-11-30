@@ -9,8 +9,8 @@ Simple Web application about box-shadow
     <li>shadow color</li>
     <li>background color</li>
     <li>box color</li>
-    <li>opacity</li>
-    <li>outline</li>
-    <li>inset</li>
+    <li>width</li>
+    <li>height</li>
+    <li>outline / inset</li>
 </ul>
 

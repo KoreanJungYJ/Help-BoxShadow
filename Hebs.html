@@ -5,11 +5,14 @@
         <meta charset="utf-8">
         <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
-        <script src = "jscolor.js"></script>
+        <link rel="shortcut icon" href="imgs/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="imgs/favicon.ico" type="image/x-icon">
         <link href = "Hebs.css" rel="stylesheet" type="text/css">
+        <!-- jscolor library -->
+        <script src = "jscolor.js"></script>
     </head>
     <body>
-        <img src = "cube.png" alt = "cube" id = "logo">
+        <img src = "imgs/logo.png" alt = "cube" id = "logo">
         <span id = "logoText">
             Hebs
         </span>
@@ -112,7 +115,17 @@
                         <span class = "sliderRound"></span>
                     </label>
                 </div>
+
+                <!-- 변환 버튼 -->
+                <div class = "eachCovers">
+                <div id = "changeBtn">
+                    <div id = "changeBtnText">
+                        Convert!
+                    </div>
+                </div>
             </div>
+            </div>
+
             <div class = "settings" id = "boxResult">
                 <div id = "defaultBox">
                     <div id = "valueCover">
@@ -140,35 +153,43 @@
         </div>
         
         <script type = "text/javascript">
+            //input 값들 설정 및 box-shadow 적용
             /*
-                구현 기능
-                1. input[type=range] input[type=num]에 연동 - OK
-                2. 연동된 값 박스에 적용 - OK
-                3. 적용 후 결과 코드 InnerHTML로 보여주기
+                순서대로
+                1. horizontal length
+                2. vertical length
+                3. blur radius
+                4. spread radius
+                5. outline / inset
             */
 
             //기본 변수 선언
             let inputRange = document.querySelectorAll('input[type=range]');
             let inputNum = document.querySelectorAll('input[type=number]');
             let backColor = document.getElementsByClassName('jscolor');
-
             //box-shadow outline / inset 설정 변수
             let shadowLine = document.querySelector('input[type=checkbox]');
-
             //box-shadow가 적용될 박스
             const resultBox = document.getElementById('defaultBox');
+            //실제 코드 적용 버튼 및 span
+            const changeBtn = document.getElementById('changeBtn');
+            const codeResults = document.getElementsByClassName('codeResults');
+
+/*--------------------------------------------------------------------------------------------*/
+
+            //공통 적용 box-shadow
+            function commonShadow(){
+                let commonVal = ` ${inputRange[0].value + "px"}` 
+                    commonVal += ` ${inputRange[1].value + "px"}` 
+                    commonVal += ` ${inputRange[2].value + "px"}` 
+                    commonVal += ` ${inputRange[3].value + "px"}` 
+                    commonVal += ` ${"#" + backColor[0].value}` 
+                    commonVal += ` ${shadowLine.value}`;
+                
+                return commonVal;
+            }
 
             Array.from(inputRange).forEach((elem, index) => {
-                //input 값들 설정 및 box-shadow 적용
-                /*
-                    순서대로
-                    1. horizontal length
-                    2. vertical length
-                    3. blur radius
-                    4. spread radius
-                    5. outline / inset
-                */
-
                 elem.oninput = (e) => {
                     inputNum[index].value = e.target.value;
                     settings();
@@ -181,18 +202,17 @@
             });
 
             //outline / inset 설정
-            shadowLine.onclick = () => {
-                console.log("check");
+            shadowLine.onclick = (e) => {
                 settings();
             }
 
             function settings(){
+
                 //box-shadow 설정
                 function setShadow(){
-                    shadowLine.value = shadowLine.checked ? 'inset' : '';
+                    shadowLine.value = shadowLine.checked ? 'inset' : ' ';
 
-                    resultBox.style.boxShadow = 
-                        `
+                    resultBox.style.boxShadow = `
                             ${inputRange[0].value + "px"}
                             ${inputRange[1].value + "px"}
                             ${inputRange[2].value + "px"}
@@ -201,27 +221,23 @@
                         `;
                 }
 
-                //width, height 설정
+                //width, height 설정 - 단순 편리성(코드 적용 x)
                 function setSize(){
                     resultBox.style.width = inputRange[4].value + "px";
                     resultBox.style.height = inputRange[5].value + "px";
                 }
-
                 setShadow();
                 setSize();
             }
 
             //박스 배경화면 설정
             Array.from(backColor).forEach((elem, index) => {
-                if(index == 0){
+                if(index == 0 || index == 2){
                     checkBackColor(elem, resultBox, index);
-                }
-                else if(index == 1){
-                    let boxBack = document.getElementById('boxResult');
-                    checkBackColor(elem, boxBack, index);
                 }
                 else{
-                    checkBackColor(elem, resultBox, index);
+                    let boxBack = document.getElementById('boxResult');
+                    checkBackColor(elem, boxBack, index);
                 }
             });
 
@@ -234,6 +250,14 @@
                         val.style.color = "#" + e.target.value;
                     }
                 }
+            }
+
+/*--------------------------------------------------------------------------------------------*/
+
+            changeBtn.onclick = () => {
+                Array.from(codeResults).forEach((elem, index) => {
+                    elem.innerText = commonShadow();
+                });
             }
         </script>
     </body>

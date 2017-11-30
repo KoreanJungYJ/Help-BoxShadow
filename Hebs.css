@@ -156,6 +156,7 @@ input[type=number] {
     margin-top: 4rem;
     border-radius: 7.5px;
     box-shadow: 0 0 4px gray inset;
+    overflow-y:auto;
 }
 
 #valueCover .browsers {
@@ -180,7 +181,6 @@ input[type=number] {
     height: 1.5rem;
     margin-left: 2rem;
     top: -2px;
-    margin-bottom:8rem;
 }
 
 .switch input {
@@ -225,4 +225,28 @@ input:checked + .sliderRound:before {
     -webkit-transform: translateX(62.5px);
     -ms-transform: translateX(62.5px);
     transform: translateX(62.5px);
+}
+
+/* 변환 버튼 */
+#changeBtn{
+    width:9rem;
+    height:2.8rem;
+    background-color:#676767;
+    border-radius: 7.5px;
+    display:table;
+    margin:0 auto;
+    margin-bottom:8rem;
+    cursor: pointer;
+}
+
+#changeBtn #changeBtnText{
+    color:white;
+    font-size:1rem;
+    display:table-cell;
+    vertical-align: middle;
+    transition:0.5s;
+}
+
+#changeBtn:hover #changeBtnText{
+    letter-spacing: 1px;    
 }
