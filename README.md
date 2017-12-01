@@ -1,5 +1,5 @@
 # Help-BoxShadow
-Simple Web application about box-shadow
+Simple Web-Page which helps setting box-shadow property.
 
 <ul>
     <li>horizontal length</li>
